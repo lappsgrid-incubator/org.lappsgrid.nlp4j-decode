@@ -1,11 +1,6 @@
 package org.anc.lapps.nlp4j;
 
-import edu.emory.mathcs.nlp.bin.NLPTrain;
-import edu.emory.mathcs.nlp.component.template.feature.Field;
-import edu.emory.mathcs.nlp.component.template.feature.Relation;
-import edu.emory.mathcs.nlp.component.template.feature.Source;
-import edu.emory.mathcs.nlp.component.template.util.NLPMode;
-import org.apache.commons.lang3.EnumUtils;
+import edu.emory.mathcs.nlp.bin.NLPDecode;
 import org.lappsgrid.api.ProcessingService;
 import org.lappsgrid.discriminator.Discriminators;
 import org.lappsgrid.metadata.IOSpecification;
@@ -261,7 +256,7 @@ public class NLP4JDecode implements ProcessingService
             // Set the special stream as the out stream
             System.setOut(ps);
 
-            NLPTrain.main(paramsArray);
+            NLPDecode.main(paramsArray);
 
             // Set System.out back to the original PrintStream
             System.out.flush();
@@ -480,7 +475,7 @@ public class NLP4JDecode implements ProcessingService
             // configuration file using the index that matches the given name
             while((ambiguityTxt == null) && (index < ambiguityNames.length))
             {
-                if(ambiguityNames[index] == givenName)
+                if(ambiguityNames[index].equals(givenName))
                 {
                     ambiguityTxt = new StringBuilder("        <ambiguity_classes field=\"");
                     ambiguityTxt.append(ambiguityFields[index]).append("\">").append(lexicaPath);
@@ -528,7 +523,7 @@ public class NLP4JDecode implements ProcessingService
             // configuration file using the index that matches the given name
             while((clustersTxt == null) && (index < clustersNames.length))
             {
-                if(clustersNames[index] == givenName)
+                if(clustersNames[index].equals(givenName))
                 {
                     clustersTxt = new StringBuilder("        <word_clusters field=\"");
                     clustersTxt.append(clustersFields[index]).append("\">").append(lexicaPath);
@@ -576,7 +571,7 @@ public class NLP4JDecode implements ProcessingService
             // configuration file using the index that matches the given name
             while((NETxt == null) && (index < namedEntityNames.length))
             {
-                if(namedEntityNames[index] == givenName)
+                if(namedEntityNames[index].equals(givenName))
                 {
                     NETxt = new StringBuilder("        <named_entity_gazetteers field=\"");
                     NETxt.append(namedEntityFields[index]).append("\">").append(lexicaPath);
@@ -622,7 +617,7 @@ public class NLP4JDecode implements ProcessingService
             // configuration file using the index that matches the given name
             while((embeddingsTxt == null) && (index < embeddingsNames.length))
             {
-                if(embeddingsNames[index] == givenName)
+                if(embeddingsNames[index].equals(givenName))
                 {
                     embeddingsTxt = new StringBuilder("        <word_embeddings field=\"");
                     embeddingsTxt.append(embeddingsFields[index]).append("\">").append(lexicaPath);
