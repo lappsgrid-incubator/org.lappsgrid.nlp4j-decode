@@ -22,7 +22,7 @@ import java.util.regex.PatternSyntaxException;
  */
 
 
-public class NLP4JDecode implements ProcessingService
+public class NLP4JCustomDecode implements ProcessingService
 {
     /**
      * The Json String required by getMetadata()
@@ -30,7 +30,7 @@ public class NLP4JDecode implements ProcessingService
     private String metadata;
     private Logger logger;
 
-    public NLP4JDecode() { metadata = generateMetadata(); }
+    public NLP4JCustomDecode() { metadata = generateMetadata(); }
 
     private String generateMetadata()
     {
@@ -42,8 +42,7 @@ public class NLP4JDecode implements ProcessingService
         metadata.setLicense(Discriminators.Uri.APACHE2);
 
         IOSpecification requires = new IOSpecification();
-        // Todo: check for appropriate input format
-        requires.addFormat(Discriminators.Uri.GET);
+        requires.addFormat(Discriminators.Uri.TEXT);
         requires.setEncoding("UTF-8");
 
         IOSpecification produces = new IOSpecification();
@@ -91,7 +90,7 @@ public class NLP4JDecode implements ProcessingService
     @Override
     public String execute(String input) {
 
-        logger = LoggerFactory.getLogger(NLP4JDecode.class);
+        logger = LoggerFactory.getLogger(NLP4JCustomDecode.class);
 
         // Parse the JSON string into a Data object, and extract its discriminator.
         Data<String> data = Serializer.parse(input, Data.class);
@@ -223,7 +222,7 @@ public class NLP4JDecode implements ProcessingService
                 // Call the method that converts the parameters to the format that they would
                 // be in when given from command-line.
                 params.append(configPath);
-
+                //params.append("C:\\Users\\Alex\\research\\config-decode-en.xml");
                 params.append(convertParameters(data, inputDirPath).replace("\\", "/"));
             }
             // Since we are only handling files created by the function, there should never be
@@ -659,7 +658,7 @@ public class NLP4JDecode implements ProcessingService
         {
             if(!modelsSet)
             {
-                lexicaSet = true;
+                modelsSet = true;
                 configTxt.append("    <models>\r\n");
             }
 
@@ -670,7 +669,7 @@ public class NLP4JDecode implements ProcessingService
         {
             if(!modelsSet)
             {
-                lexicaSet = true;
+                modelsSet = true;
                 configTxt.append("    <models>\r\n");
             }
 
@@ -681,14 +680,14 @@ public class NLP4JDecode implements ProcessingService
         {
             if(!modelsSet)
             {
-                lexicaSet = true;
+                modelsSet = true;
                 configTxt.append("    <models>\r\n");
             }
 
             configTxt.append("        <dep>").append(modelsPath).append("en-dep.xz</dep>\r\n");
         }
 
-        if(lexicaSet)
+        if(modelsSet)
         {
             configTxt.append("    </models>\r\n");
         }

@@ -19,26 +19,26 @@ import static org.lappsgrid.discriminator.Discriminators.Uri;
 /**
  * @author Alexandru Mahmoud
  */
-public class NLP4JDecodeTest
+public class NLP4JCustomDecodeTest
 {
-    private NLP4JDecode nlp4jDecode;
+    private NLP4JCustomDecode nlp4JCustomDecode;
 
     @Before
     public void setup()
     {
-        nlp4jDecode = new NLP4JDecode();
+        nlp4JCustomDecode = new NLP4JCustomDecode();
     }
 
     @After
     public void cleanup()
     {
-        nlp4jDecode = null;
+        nlp4JCustomDecode = null;
 
     }
     @Test
     public void testMetadata()
     {
-        String jsonMetadata = nlp4jDecode.getMetadata();
+        String jsonMetadata = nlp4JCustomDecode.getMetadata();
         assertNotNull("service.getMetadata() returned null", jsonMetadata);
 
         Data data = Serializer.parse(jsonMetadata, Data.class);
@@ -48,7 +48,7 @@ public class NLP4JDecodeTest
         ServiceMetadata metadata = new ServiceMetadata((Map) data.getPayload());
 
         assertEquals("Vendor is not correct", "http://www.lappsgrid.org", metadata.getVendor());
-        assertEquals("Name is not correct", NLP4JDecode.class.getName(), metadata.getName());
+        assertEquals("Name is not correct", NLP4JCustomDecode.class.getName(), metadata.getName());
         assertEquals("Version is not correct.","1.0.0-SNAPSHOT" , metadata.getVersion());
         assertEquals("License is not correct", Discriminators.Uri.APACHE2, metadata.getLicense());
 
@@ -66,10 +66,10 @@ public class NLP4JDecodeTest
     @Test
     public void testErrorInput()
     {
-        System.out.println("NLP4JDecodeTest.testErrorInput");
+        System.out.println("NLP4JCustomDecodeTest.testErrorInput");
         String message = "This is an error message";
         Data<String> data = new Data<>(Uri.ERROR, message);
-        String json = nlp4jDecode.execute(data.asJson());
+        String json = nlp4JCustomDecode.execute(data.asJson());
         assertNotNull("No JSON returned from the service", json);
 
         data = Serializer.parse(json, Data.class);
@@ -80,9 +80,9 @@ public class NLP4JDecodeTest
     @Test
     public void testInvalidDiscriminator()
     {
-        System.out.println("NLP4JDecodeTest.testInvalidDiscriminator");
+        System.out.println("NLP4JCustomDecodeTest.testInvalidDiscriminator");
         Data<String> data = new Data<>(Uri.QUERY, "");
-        String json = nlp4jDecode.execute(data.asJson());
+        String json = nlp4JCustomDecode.execute(data.asJson());
         assertNotNull("No JSON returned from the service", json);
         data = Serializer.parse(json, Data.class);
         assertEquals("Invalid discriminator returned: " + data.getDiscriminator(), Uri.ERROR, data.getDiscriminator());
@@ -92,13 +92,13 @@ public class NLP4JDecodeTest
     @Test
     public void testExecute()
     {
-        System.out.println("NLP4JDecodeTest.testExecute");
+        System.out.println("NLP4JCustomDecodeTest.testExecute");
 
         String inputTxt;
 
         try
         {
-            inputTxt = nlp4jDecode.readFile("src/test/resources/text-samples/nlp4j.txt");
+            inputTxt = nlp4JCustomDecode.readFile("src/test/resources/text-samples/nlp4j.txt");
         }
         catch (IOException e)
         {
@@ -117,7 +117,7 @@ public class NLP4JDecodeTest
         data.setParameter("pos", "yes");
         data.setParameter("ner", true);
 
-        String response = nlp4jDecode.execute(data.asJson());
+        String response = nlp4JCustomDecode.execute(data.asJson());
         System.out.println(response);
     }
 
